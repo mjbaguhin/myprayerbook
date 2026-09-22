@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>My Prayerbook</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Prayerbook">
+<meta name="theme-color" content="#F2E9D8">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="manifest" href="manifest.json">
+<!-- Web fonts load without blocking; offline the page falls back to built-in serifs and still works. -->
+<link rel="stylesheet" media="print" onload="this.media='all'"
+      href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Figtree:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#F2E9D8; --surface:#FBF6EC; --surface-2:#EDE2CC;
+  --ink:#251D1A; --ink-soft:#63544B; --rule:#D9C8A6; --gilt:#94742B;
+  --shadow:rgba(60,40,20,.14);
+  --green:#3A6B45; --red:#97222B; --violet:#5B3A77; --rose:#A3496B;
+  --blue:#2C4A7C; --gold:#94742B; --slate:#4A423C;
+  --sos-bg:#8E2029; --sos-fg:#FDF3EC;
+  --prayer-size:1.1rem;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#15111A; --surface:#1E1824; --surface-2:#2A2231;
+    --ink:#EFE4D2; --ink-soft:#A3958A; --rule:#3B3143;
+    --gilt:#CDA857; --shadow:rgba(0,0,0,.5); --sos-bg:#7A1B23; --sos-fg:#F6E3DC;
+    --green:#79B187; --red:#E0757B; --violet:#B294D4; --rose:#DE93AF;
+    --blue:#8BABE0; --gold:#CDA857; --slate:#B5A99C;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#15111A; --surface:#1E1824; --surface-2:#2A2231;
+  --ink:#EFE4D2; --ink-soft:#A3958A; --rule:#3B3143; --gilt:#CDA857;
+  --shadow:rgba(0,0,0,.5);
+  --green:#79B187; --red:#E0757B; --violet:#B294D4; --rose:#DE93AF;
+  --blue:#8BABE0; --gold:#CDA857; --slate:#B5A99C;
+  --sos-bg:#7A1B23; --sos-fg:#F6E3DC;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{-webkit-text-size-adjust:100%; scroll-padding-top:env(safe-area-inset-top,0px)}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"Figtree",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  line-height:1.5; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:33rem;margin:0 auto;padding:0 1.05rem 4rem}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--gilt);outline-offset:2px;border-radius:3px}
+
+/* ── masthead ───────────────────────────── */
+.masthead{padding:1.5rem 0 .9rem;display:flex;align-items:flex-start;gap:.75rem}
+.masthead h1{
+  font-family:"EB Garamond","Iowan Old Style","Palatino Linotype",Palatino,"Noto Serif",Georgia,serif;font-weight:600;font-style:italic;
+  font-size:1.65rem;line-height:1.1;margin:0;letter-spacing:.01em;
+}
+.masthead p{margin:.25rem 0 0;font-size:.79rem;color:var(--ink-soft)}
+.mast-tools{margin-left:auto;display:flex;gap:.3rem;flex-shrink:0}
+.tool{
+  width:2.1rem;height:2.1rem;border:1px solid var(--rule);border-radius:50%;
+  display:grid;place-items:center;font-size:.8rem;color:var(--ink-soft);
+  background:var(--surface);
+}
+.tool[aria-pressed="true"]{border-color:var(--gilt);color:var(--gilt)}
+
+/* ── emergency ──────────────────────────── */
+.sos{
+  width:100%;display:flex;align-items:center;gap:.7rem;text-align:left;
+  background:var(--sos-bg);color:var(--sos-fg);border-radius:2px;
+  padding:.8rem .95rem;margin-bottom:1.15rem;
+  box-shadow:0 1px 0 var(--shadow);
+}
+.sos-cross{font-size:1.2rem;line-height:1}
+.sos b{display:block;font-weight:600;font-size:.95rem}
+.sos span{font-size:.78rem;opacity:.85}
+
+/* ── right now ──────────────────────────── */
+.now{
+  background:var(--surface);border:1px solid var(--rule);
+  border-top:3px solid var(--gilt);
+  padding:1.1rem 1.05rem 1rem;margin-bottom:1.1rem;
+}
+.now-label{font-size:.73rem;color:var(--ink-soft);margin:0 0 .5rem}
+.now blockquote{
+  margin:0;font-family:"EB Garamond","Iowan Old Style","Palatino Linotype",Palatino,"Noto Serif",Georgia,serif;font-size:1.28rem;
+  line-height:1.4;font-style:italic;
+}
+.now-go{
+  margin-top:.9rem;display:inline-flex;align-items:center;gap:.4rem;
+  border-bottom:1px solid var(--gilt);color:var(--gilt);
+  font-size:.85rem;font-weight:500;padding-bottom:1px;
+}
+
+/* ── three pauses ───────────────────────── */
+.pauses{margin:0 0 1.35rem}
+.pauses h2,.cats h2{
+  font-family:"EB Garamond","Iowan Old Style","Palatino Linotype",Palatino,"Noto Serif",Georgia,serif;font-size:1.02rem;font-weight:600;
+  margin:0 0 .15rem;
+}
+.pauses p.sub{margin:0 0 .65rem;font-size:.76rem;color:var(--ink-soft)}
+.ribbons{display:flex;gap:.45rem}
+.ribbon{
+  flex:1;background:var(--surface);border:1px solid var(--rule);
+  padding:.6rem .5rem .55rem;text-align:left;position:relative;
+  border-radius:2px;transition:background .18s ease;
+}
+.ribbon i{
+  display:block;width:100%;height:3px;background:var(--rule);margin-bottom:.45rem;
+}
+.ribbon b{display:block;font-size:.78rem;font-weight:600}
+.ribbon span{display:block;font-size:.68rem;color:var(--ink-soft);margin-top:.1rem}
+.ribbon[aria-pressed="true"]{background:var(--surface-2)}
+.ribbon[aria-pressed="true"] i{background:var(--gilt)}
+.ribbon[aria-pressed="true"] b::after{content:" ✓";color:var(--gilt)}
+.kept{margin:.55rem 0 0;font-size:.73rem;color:var(--ink-soft)}
+
+/* ── search ─────────────────────────────── */
+.search{position:relative;margin-bottom:1.1rem}
+.search input{
+  width:100%;font:inherit;font-size:.9rem;padding:.65rem .8rem .65rem 2.1rem;
+  background:var(--surface);border:1px solid var(--rule);color:var(--ink);
+  border-radius:2px;
+}
+.search input::placeholder{color:var(--ink-soft)}
+.search svg{position:absolute;left:.72rem;top:50%;transform:translateY(-50%);opacity:.5}
+
+/* ── categories ─────────────────────────── */
+.cats h2{margin-bottom:.6rem}
+.cat{margin-bottom:.5rem;border:1px solid var(--rule);background:var(--surface);border-radius:2px;overflow:hidden}
+.cat-head{
+  width:100%;display:flex;align-items:center;gap:.8rem;
+  padding:.78rem .9rem;text-align:left;border-left:5px solid var(--c,var(--rule));
+}
+.cat-head b{font-family:"EB Garamond","Iowan Old Style","Palatino Linotype",Palatino,"Noto Serif",Georgia,serif;font-size:1.06rem;font-weight:600;flex:1}
+.cat-head em{font-style:normal;font-size:.75rem;color:var(--ink-soft)}
+.chev{transition:transform .2s ease;opacity:.55;flex-shrink:0}
+.cat[open] .chev{transform:rotate(180deg)}
+.cat-body{border-top:1px solid var(--rule);display:none}
+.cat[open] .cat-body{display:block}
+.item{
+  width:100%;display:flex;align-items:baseline;gap:.6rem;text-align:left;
+  padding:.66rem .9rem .66rem 1.35rem;border-bottom:1px solid var(--rule);
+}
+.item:last-child{border-bottom:0}
+.item span{flex:1;font-size:.93rem}
+.item em{font-style:normal;font-size:.72rem;color:var(--ink-soft);flex-shrink:0}
+.item .star{color:var(--gilt)}
+
+/* ── reading sheet ──────────────────────── */
+.sheet{
+  position:fixed;inset:0;background:var(--paper);z-index:50;
+  display:flex;flex-direction:column;
+  transform:translateY(100%);transition:transform .26s cubic-bezier(.4,0,.2,1);
+  visibility:hidden;
+}
+.sheet.open{transform:translateY(0);visibility:visible}
+@media (prefers-reduced-motion:reduce){.sheet{transition:none}}
+.sheet-bar{
+  display:flex;align-items:center;gap:.5rem;padding:.55rem .8rem;
+  padding-top:calc(.55rem + env(safe-area-inset-top,0px));
+  border-bottom:1px solid var(--rule);background:var(--surface);flex-shrink:0;
+}
+.sheet-bar button{padding:.45rem .55rem;font-size:.85rem;color:var(--ink-soft)}
+.sheet-bar .back{display:flex;align-items:center;gap:.35rem}
+.sheet-bar .spacer{flex:1}
+.sheet-bar .fav[aria-pressed="true"]{color:var(--gilt)}
+.sheet-scroll{overflow-y:auto;padding:1.4rem 1.15rem 3rem;-webkit-overflow-scrolling:touch}
+.sheet-scroll .inner{max-width:33rem;margin:0 auto}
+.sheet h3{
+  font-family:"EB Garamond","Iowan Old Style","Palatino Linotype",Palatino,"Noto Serif",Georgia,serif;font-size:1.5rem;font-weight:600;
+  line-height:1.2;margin:0 0 .2rem;
+}
+.sheet .meta{font-size:.75rem;color:var(--ink-soft);margin:0 0 1.1rem}
+.sheet .rule{height:1px;background:var(--rule);margin:0 0 1.2rem}
+.prayer p{
+  font-family:"EB Garamond","Iowan Old Style","Palatino Linotype",Palatino,"Noto Serif",Georgia,serif;font-size:var(--prayer-size);
+  line-height:1.72;margin:0 0 1.05rem;
+}
+.prayer p.lead{font-style:italic;color:var(--ink-soft)}
+.prayer p.aspiration{
+  padding-left:.9rem;border-left:2px solid var(--c,var(--gilt));
+  margin-bottom:.75rem;font-size:calc(var(--prayer-size) + .06rem);
+}
+.prayer p.latin{font-style:italic}
+.prayer h4{
+  font-family:"Figtree",sans-serif;font-size:.8rem;font-weight:600;
+  color:var(--ink-soft);margin:1.6rem 0 .5rem;
+}
+.sheet-done{
+  display:block;width:100%;margin-top:1.6rem;padding:.85rem;
+  border:1px solid var(--gilt);color:var(--gilt);border-radius:2px;
+  font-size:.9rem;font-weight:500;text-align:center;background:var(--surface);
+}
+
+/* ── footer ─────────────────────────────── */
+footer{margin-top:2rem;border-top:1px solid var(--rule);padding-top:1.1rem}
+footer h2{font-family:"EB Garamond","Iowan Old Style","Palatino Linotype",Palatino,"Noto Serif",Georgia,serif;font-size:1rem;margin:0 0 .4rem}
+footer p{font-size:.78rem;color:var(--ink-soft);margin:0 0 .5rem;line-height:1.6}
+footer .sig{
+  font-family:"EB Garamond","Iowan Old Style","Palatino Linotype",Palatino,"Noto Serif",Georgia,serif;font-style:italic;font-size:.95rem;
+  color:var(--gilt);margin-top:1.2rem;text-align:center;
+}
+.install{
+  display:block;width:100%;padding:.9rem;margin:0 0 1.1rem;
+  background:var(--sos-bg);color:var(--sos-fg);border-radius:2px;
+  font-size:.95rem;font-weight:600;text-align:center;
+}
+.installed{font-size:.8rem;color:var(--gilt)}
+.empty{font-size:.85rem;color:var(--ink-soft);padding:.8rem 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div>
+      <h1>My Prayerbook</h1>
+      <p id="greeting">For a day with very little time left over</p>
+    </div>
+    <div class="mast-tools">
+      <button class="tool" id="sizeBtn" title="Text size">A<sup>+</sup></button>
+      <button class="tool" id="themeBtn" title="Night reading" aria-pressed="false">☾</button>
+    </div>
+  </header>
+
+  <button class="sos" id="sosBtn">
+    <span class="sos-cross">✝</span>
+    <span>
+      <b>Everything is too much right now</b>
+      <span>Sixty seconds. Start here.</span>
+    </span>
+  </button>
+
+  <section class="now">
+    <p class="now-label" id="nowLabel">Right now</p>
+    <blockquote id="nowQuote"></blockquote>
+    <button class="now-go" id="nowGo"></button>
+  </section>
+
+  <section class="pauses">
+    <h2>My three pauses</h2>
+    <p class="sub">Three returns to God, even on the worst day. Nothing more is required.</p>
+    <div class="ribbons">
+      <button class="ribbon" data-pause="morning" aria-pressed="false">
+        <i></i><b>Morning</b><span>I give Thee this day</span>
+      </button>
+      <button class="ribbon" data-pause="midday" aria-pressed="false">
+        <i></i><b>At work</b><span>I trust in Thee</span>
+      </button>
+      <button class="ribbon" data-pause="night" aria-pressed="false">
+        <i></i><b>Night</b><span>All unfinished</span>
+      </button>
+    </div>
+    <p class="kept" id="keptLine"></p>
+  </section>
+
+  <div class="search">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5 14 14"/></svg>
+    <input type="search" id="searchInput" placeholder="Find a prayer — mistake, cats, deadline…" autocomplete="off">
+  </div>
+
+  <section class="cats">
+    <h2 id="listHeading">Open to what I need</h2>
+    <div id="list"></div>
+  </section>
+
+  <footer>
+    <button class="install" id="installBtn" hidden>Install this prayerbook on my phone</button>
+    <p class="installed" id="installedNote" hidden>Installed. Open it from the cross icon on your home screen.</p>
+    <h2>Keeping this on my phone, offline</h2>
+    <p><b>iPhone:</b> open this page in Safari, tap the share button, then <b>Add to Home Screen</b>. Open it once from the icon while you still have a signal. After that it opens without data.</p>
+    <p><b>Android:</b> open in Chrome, tap the three dots, then <b>Add to Home screen</b>, and open it once from the icon.</p>
+    <p><b>If the signal fails anyway:</b> keep the downloaded <b>prayerbook.html</b> file in your Files or Downloads folder. Tapping it opens this same prayerbook with no internet at all.</p>
+    <p>Marked prayers, pauses, text size and night reading are remembered on this phone only.</p>
+    <p class="sig">Sacred Heart of Jesus, I trust in Thee.</p>
+  </footer>
+</div>
+
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <div class="sheet-bar">
+    <button class="back" id="sheetBack">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M10 3 5 8l5 5"/></svg>
+      Back
+    </button>
+    <span class="spacer"></span>
+    <button class="fav" id="sheetFav" aria-pressed="false" title="Mark this prayer">✦ Mark</button>
+  </div>
+  <div class="sheet-scroll" id="sheetScroll">
+    <div class="inner">
+      <h3 id="sheetTitle"></h3>
+      <p class="meta" id="sheetMeta"></p>
+      <div class="rule"></div>
+      <div class="prayer" id="sheetBody"></div>
+      <button class="sheet-done" id="sheetDone">Amen — close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ────────────── the prayers ────────────── */
+const CATS = [
+  {id:"rhythm", name:"Begin, pause, end the day", color:"var(--green)", note:"waking · computer · midday · evening · night"},
+  {id:"urgent", name:"When everything is urgent", color:"var(--red)", note:"deadlines · two departments · hard messages"},
+  {id:"short",  name:"When I fall short", color:"var(--violet)", note:"mistakes · pressure · asking for help"},
+  {id:"empty",  name:"When I have nothing left", color:"var(--rose)", note:"tired mind · tired body · no time"},
+  {id:"care",   name:"The ones in my care", color:"var(--blue)", note:"employers · coworkers · the cats"},
+  {id:"heaven", name:"Heaven's help", color:"var(--gold)", note:"St Joseph · Our Lady · my Guardian Angel"},
+  {id:"quick",  name:"Ten seconds or less", color:"var(--slate)", note:"aspirations · the minimum · my rule"}
+];
+
+const P = [
+/* ── rhythm ── */
+{id:"waking", cat:"rhythm", t:"Upon waking", secs:"about 1 minute", b:[
+ ["lead","In the name of the Father, and of the Son, and of the Holy Ghost. Amen."],
+ ["p","O Jesus, through the Immaculate Heart of Mary, I offer Thee my prayers, works, joys, and sufferings of this day, for all the intentions of Thy Sacred Heart, in union with the Holy Sacrifice of the Mass throughout the world."],
+ ["p","My Lord Jesus Christ, Thou knowest the work waiting for me. Before I look at messages, deadlines, problems, reports, requests, and urgent tasks, I look first to Thee."],
+ ["p","I thank Thee for my employment, for work that I genuinely love, for the income and blessings that provide for my responsibilities, and for the kindness and consideration I have received through my work."],
+ ["p","Keep gratitude alive in me even when I am tired. But Thou also knowest my limits. Give me strength for today's duties — not tomorrow's burdens. Give me a clear mind, an orderly heart, patience under pressure, wisdom in decisions, and charity toward everyone I encounter."],
+ ["p","Jesus, work with me today. Amen."]]},
+
+{id:"computer", cat:"rhythm", t:"Before I open my computer", secs:"20 seconds", b:[
+ ["p","Come, Holy Ghost. Direct my thoughts. Order my priorities. Guard me from mistakes caused by haste. Help me distinguish what is truly urgent from what can wait. Let me work carefully without becoming anxious."],
+ ["aspiration","All for Thee, my God. Amen."]]},
+
+{id:"midday", cat:"rhythm", t:"Midday reset", secs:"30 seconds", b:[
+ ["lead","In the name of the Father, and of the Son, and of the Holy Ghost. Amen."],
+ ["aspiration","Sacred Heart of Jesus, I place my trust in Thee."],
+ ["p","Thank Thee for what has already been accomplished today. Forgive my impatience and anxiety. Bless the work still unfinished. Order what is disordered. Strengthen what is weak. I begin again with Thee. Amen."]]},
+
+{id:"workends", cat:"rhythm", t:"When work is finally over", secs:"about 1 minute", b:[
+ ["p","Lord, I am stopping now. Some work remains unfinished. Some problems remain unresolved. Some messages may have to wait."],
+ ["p","I surrender the unfinished work to Thee. Guard it while I rest. Keep me from mentally reopening my work again and again."],
+ ["p","What I did well, receive. What I did poorly, forgive and correct. What remains undone, provide for according to Thy Providence."],
+ ["p","Jesus, I surrender this workday to Thee. Amen."]]},
+
+{id:"night", cat:"rhythm", t:"Night examination", secs:"about 2 minutes", b:[
+ ["h","Thanksgiving"],
+ ["p","My God, thank Thee for every grace Thou gavest me today; for my employment, every problem solved, every person who helped me, and every provision for my needs."],
+ ["h","Examination"],
+ ["p","Where was I impatient? Did anxiety control me? Was I uncharitable because I was tired? Did I neglect a duty through carelessness? Did I unnecessarily push myself beyond reasonable limits? Did I remember gratitude and trust?"],
+ ["h","Act of Contrition"],
+ ["p","O my God, I am heartily sorry for having offended Thee, and I detest all my sins because I dread the loss of Heaven and the pains of hell, but most of all because they offend Thee, my God, Who art all-good and deserving of all my love. I firmly resolve, with the help of Thy grace, to confess my sins, to do penance, and to amend my life. Amen."]]},
+
+{id:"rest", cat:"rhythm", t:"For true rest", secs:"1 minute", b:[
+ ["p","Lord Jesus, my work is finished for today. My mind wants to continue solving tomorrow's problems. I give them to Thee instead."],
+ ["p","I surrender the deadlines, unfinished tasks, problems in both departments, difficult decisions, household needs, the creatures entrusted to me, and my fears about tomorrow."],
+ ["p","Let my mind become quiet. Let my body recover. Let my heart rest in Thy Sacred Heart."],
+ ["p","Tomorrow's grace will come tomorrow. Tonight, let me sleep beneath Thy Providence. Amen."]]},
+
+/* ── urgent ── */
+{id:"allatonce", cat:"urgent", t:"When everything becomes urgent at once", secs:"40 seconds", b:[
+ ["p","Lord Jesus, there are too many things demanding my attention at once. I cannot solve everything simultaneously. Quiet the noise within me. Show me the next right thing to do."],
+ ["p","Give me humility to accept that some things must wait. Give me concentration for the task before me. Protect me from panic, confusion, irritation, and careless decisions."],
+ ["aspiration","One task at a time. One problem at a time. One hour at a time."],
+ ["p","Jesus, I trust the things I cannot finish immediately to Thee. Amen."]]},
+
+{id:"twodepts", cat:"urgent", t:"When two departments need me at once", secs:"40 seconds", b:[
+ ["p","My God, I am being pulled in different directions. Each responsibility seems important. Each problem seems urgent. Each person needs an answer. But I am only one person."],
+ ["p","Give me wisdom to determine what must be handled first. Give me courage to communicate clearly when something cannot reasonably be completed immediately. Protect me from promising more than I can humanly accomplish."],
+ ["p","Let me serve faithfully without believing that I must personally carry everything."],
+ ["p","Sacred Heart of Jesus, govern my work and govern my heart. Amen."]]},
+
+{id:"another", cat:"urgent", t:"When another problem appears", secs:"15 seconds", b:[
+ ["lead","Before reacting: Come, Holy Ghost."],
+ ["p","Lord, give me facts before conclusions, patience before replies, prudence before decisions, and charity before words. Amen."]]},
+
+{id:"message", cat:"urgent", t:"Before answering a difficult message", secs:"20 seconds", b:[
+ ["lead","Set a watch, O Lord, before my mouth: and a door round about my lips."],
+ ["p","Keep me from answering from exhaustion, frustration, fear, or irritation. Let my words be truthful, prudent, charitable, and clear. Amen."]]},
+
+{id:"deadline", cat:"urgent", t:"The deadline prayer", secs:"10 seconds", b:[
+ ["aspiration","Jesus, give me calmness, clarity, accuracy, and speed — but never haste without judgment."]]},
+
+/* ── short ── */
+{id:"mistake", cat:"short", t:"When I make a mistake", secs:"30 seconds", b:[
+ ["p","Jesus, meek and humble of Heart, give me humility. If I have made an error, help me correct it honestly. Do not let embarrassment become panic. Do not let one mistake destroy the peace of the whole day. Teach me what I need to learn and help me continue."],
+ ["aspiration","Jesus, I trust in Thee."]]},
+
+{id:"dependon", cat:"short", t:"When I feel that everyone depends on me", secs:"30 seconds", b:[
+ ["p","Lord, I sometimes feel as though everything will fall apart if I stop. Correct this thought in me."],
+ ["p","Thou art God. I am Thy servant. I have duties, but I am not Providence. I have responsibilities, but I do not control everything."],
+ ["p","I will do faithfully what belongs to me. What lies beyond my strength I place into Thy hands."],
+ ["p","Jesus, take care of everything that I cannot. Amen."]]},
+
+{id:"needhelp", cat:"short", t:"When I am afraid to say, I need help", secs:"45 seconds", b:[
+ ["p","My Lord, Thou knowest that I do not want to appear ungrateful. I do not want to complain. I do not want to disappoint people who trust me. Yet Thou hast not commanded me to pretend that I have unlimited strength."],
+ ["p","Give me humility to acknowledge my limits, prudence to recognize when assistance is necessary, and courage to speak respectfully and honestly."],
+ ["p","If I should ask for help, additional support, redistribution of duties, or clearer priorities, help me do so without anger, accusation, or fear. Let me speak truth with charity."],
+ ["p","Holy Ghost, counsel me. Amen."]]},
+
+/* ── empty ── */
+{id:"nothink", cat:"empty", t:"When I cannot think anymore", secs:"25 seconds", b:[
+ ["p","Come, Holy Ghost. My mind is tired. My attention is scattered. Refresh my understanding. Help me see clearly what I am missing. If I need to stop briefly, give me wisdom to stop. If I must continue, supply what is lacking in me. Amen."]]},
+
+{id:"body", cat:"empty", t:"When my body is already tired", secs:"30 seconds", b:[
+ ["p","Lord Jesus, my body is not a machine. It too belongs to Thee. Teach me not to despise its need for food, water, sleep, movement, quiet, and recovery. Help me recognize exhaustion before it becomes collapse. Grant me discipline to care for the body Thou hast given me so that I may continue serving Thee faithfully. Amen."]]},
+
+{id:"notime", cat:"empty", t:"When I have no time to pray", secs:"30 seconds", b:[
+ ["p","Jesus, I have almost no quiet time today. Receive my work as my offering."],
+ ["p","Receive every difficult message, every problem I solve, every interruption, every moment I remain patient when I want to become irritated, every time I choose honesty over convenience, every act of kindness, and every sacrifice nobody sees."],
+ ["p","I unite them to Thy Cross."],
+ ["p","Jesus, let my work become prayer. Amen."]]},
+
+/* ── care ── */
+{id:"work-people", cat:"care", t:"For my employers and coworkers", secs:"45 seconds", b:[
+ ["p","Lord Jesus Christ, bless the people with whom I work. Reward those who have shown me kindness, generosity, patience, consideration, and trust. Bless my employers for the opportunities and material benefits I have received through my work. Bless my coworkers."],
+ ["p","Give us honesty, fairness, patience, good judgment, mutual respect, and charity. May I never allow exhaustion to make me ungrateful. But may gratitude never prevent me from speaking truthfully when my human limits have been reached."],
+ ["p","Give me wisdom to know the difference between generous sacrifice and unsustainable overwork. Amen."]]},
+
+{id:"cats", cat:"care", t:"When I still have the cats to care for", secs:"30 seconds", b:[
+ ["p","Lord, these creatures depend upon my care. When I am exhausted and still have feeding, cleaning, medicines, checking, and other duties to perform, give me gentleness."],
+ ["p","Keep irritation far from me. Protect the animals entrusted to my care. Provide what they need. Give me enough strength to finish what is necessary, and wisdom to leave unnecessary things until tomorrow."],
+ ["p","Saint Francis of Assisi, pray for me. Amen."]]},
+
+/* ── heaven ── */
+{id:"joseph", cat:"heaven", t:"To Saint Joseph, model of workers", secs:"45 seconds", b:[
+ ["p","Glorious Saint Joseph, thou didst labor faithfully and quietly for Jesus and Mary. Teach me to sanctify my work. Obtain for me patience when duties multiply, prudence when decisions are difficult, perseverance when I am weary, and humility when I need assistance."],
+ ["p","Protect my employment. Bless the work of my hands and mind. Help me work diligently without making work my entire life. Remind me that my first purpose is not productivity, achievement, income, or praise, but the service and possession of God."],
+ ["p","Saint Joseph, patron of workers, pray for me. Amen."]]},
+
+{id:"ourlady", cat:"heaven", t:"To Our Lady when I am overwhelmed", secs:"45 seconds", b:[
+ ["p","Most Blessed Virgin Mary, Mother of God and my Mother, I am tired. Take me beneath thy mantle. When my thoughts are racing, quiet them. When responsibilities frighten me, remind me that God remains in control. When I become impatient, obtain gentleness for me. When I become discouraged, lead me back to thy Divine Son."],
+ ["p","When I cannot make a long prayer, accept my little Ave Maria offered with love. Mary, my Mother, stay beside me while I work. Amen."],
+ ["latin","Ave Maria, gratia plena, Dominus tecum; benedicta tu in mulieribus, et benedictus fructus ventris tui, Jesus. Sancta Maria, Mater Dei, ora pro nobis peccatoribus, nunc et in hora mortis nostrae. Amen."]]},
+
+{id:"angel", cat:"heaven", t:"To my Guardian Angel during work", secs:"30 seconds", b:[
+ ["latin","Angel of God, my guardian dear, to whom His love commits me here, ever this day be at my side, to light and guard, to rule and guide. Amen."],
+ ["p","My Guardian Angel, especially guard my judgment when I am tired. Help me notice mistakes before they become problems. Remind me of duties I may forget. Protect me in moments of confusion. Lead me always toward God. Amen."]]},
+
+/* ── quick ── */
+{id:"aspirations", cat:"quick", t:"Short aspirations through the day", secs:"a few seconds each", b:[
+ ["aspiration","Sacred Heart of Jesus, I trust in Thee."],
+ ["aspiration","Jesus, meek and humble of Heart, make my heart like unto Thine."],
+ ["aspiration","My Jesus, mercy."],
+ ["aspiration","Come, Holy Ghost."],
+ ["aspiration","Saint Joseph, pray for me."],
+ ["aspiration","My Guardian Angel, guide me."],
+ ["aspiration","O Mary conceived without sin, pray for us who have recourse to thee."],
+ ["aspiration","Jesus, help me."],
+ ["aspiration","All for Thee, Jesus."]]},
+
+{id:"minimum", cat:"quick", t:"The absolute minimum", secs:"under a minute, all day", b:[
+ ["h","Morning"],["aspiration","Jesus, I offer Thee everything today."],
+ ["h","During work"],["aspiration","Sacred Heart of Jesus, I trust in Thee."],
+ ["h","When overwhelmed"],["aspiration","Come, Holy Ghost. Show me what to do next."],
+ ["h","When work ends"],["aspiration","Jesus, I give Thee everything unfinished."],
+ ["h","Before sleep"],["p","Jesus, Mary, and Joseph, I give you my heart and my soul. Jesus, Mary, and Joseph, assist me in my last agony. Jesus, Mary, and Joseph, may I breathe forth my soul in peace with you. Amen."]]},
+
+{id:"threepause", cat:"quick", t:"My three-pause rule", secs:"read when guilty", b:[
+ ["p","Even on my worst workday I will try to return consciously to God only three times."],
+ ["h","Morning"],["aspiration","Lord, I give Thee this day."],
+ ["h","Middle of work"],["aspiration","Sacred Heart of Jesus, I trust in Thee."],
+ ["h","Before sleep"],["aspiration","Jesus, I give Thee everything unfinished."],
+ ["p","If that is genuinely all I can manage on an exceptionally difficult day, I will not turn prayer into another reason to feel guilty. Tomorrow I begin again."]]},
+
+{id:"rule", cat:"quick", t:"My rule for this season of life", secs:"read on a hard week", b:[
+ ["p","I will work faithfully. I will remain grateful. I will try to serve others generously. But I will remember:"],
+ ["aspiration","Gratitude does not require me to pretend I am never exhausted."],
+ ["aspiration","Being dependable does not require me to do the work of several people indefinitely."],
+ ["aspiration","Asking for help is not the same as complaining."],
+ ["aspiration","Rest is not wasted time."],
+ ["aspiration","My worth before God is not measured by the number of tasks I complete."],
+ ["p","I will do what reasonably belongs to me. I will ask God for wisdom concerning what does not. And when I have reached the limit of what I can accomplish today, I will say: Lord, I have done what I can. The rest I leave in Thy hands."],
+ ["p","Sacred Heart of Jesus, I trust in Thee. Immaculate Heart of Mary, pray for me. Saint Joseph, pray for me. Amen."]]},
+
+/* ── emergency (not in a category list) ── */
+{id:"sos", cat:"sos", t:"A terrible workday", secs:"60 seconds", b:[
+ ["lead","In the name of the Father, and of the Son, and of the Holy Ghost. Amen."],
+ ["p","Jesus, everything feels like too much. I cannot carry the whole day at once. Give me grace for this moment. Show me the next duty."],
+ ["p","I offer Thee my exhaustion. I offer Thee my pressure. I offer Thee my work. I offer Thee everything I cannot finish."],
+ ["aspiration","Sacred Heart of Jesus, I trust in Thee."],
+ ["aspiration","Immaculate Heart of Mary, pray for me."],
+ ["aspiration","Saint Joseph, help me."],
+ ["aspiration","My Guardian Angel, guide me."],
+ ["aspiration","Come, Holy Ghost."],
+ ["p","Jesus, I trust the next moment to Thee. Amen."]]},
+
+{id:"card", cat:"sos", t:"Emergency prayer card", secs:"one line each", b:[
+ ["h","When I start"],["aspiration","Jesus, I offer Thee everything today."],
+ ["h","When everything is urgent"],["aspiration","Come, Holy Ghost. Show me the next right thing."],
+ ["h","When I am panicking"],["aspiration","Sacred Heart of Jesus, I trust in Thee."],
+ ["h","When I cannot think"],["aspiration","Jesus, give me calmness, clarity, accuracy, and good judgment."],
+ ["h","When I need help"],["aspiration","Holy Ghost, give me humility and courage to speak truth with charity."],
+ ["h","When I am exhausted"],["aspiration","Jesus, I can do no more without Thee. Help me."],
+ ["h","When I stop work"],["aspiration","Jesus, I give Thee everything unfinished."],
+ ["h","Before sleep"],["aspiration","Lord, I have done what I can. The rest I leave in Thy hands."]]}
+];
+
+const byId = Object.fromEntries(P.map(p=>[p.id,p]));
+const catColor = Object.fromEntries(CATS.map(c=>[c.id,c.color]));
+
+/* ────────────── storage ────────────── */
+const KEY="prayerbook.v1";
+let store={favs:[],pauses:{},kept:0,lastKept:"",size:1,theme:"auto"};
+function load(){try{const r=localStorage.getItem(KEY);if(r)store=Object.assign(store,JSON.parse(r));}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){}}
+load();
+
+const todayKey = ()=>new Date().toISOString().slice(0,10);
+
+/* ────────────── theme & size ────────────── */
+const root=document.documentElement;
+function applyTheme(){
+  if(store.theme==="auto"){root.removeAttribute("data-theme");}
+  else root.setAttribute("data-theme",store.theme);
+  const dark = store.theme==="dark" || (store.theme==="auto" && matchMedia("(prefers-color-scheme:dark)").matches);
+  themeBtn.setAttribute("aria-pressed", dark?"true":"false");
+  themeBtn.textContent = dark ? "☀" : "☾";
+}
+const SIZES=[1,1.15,1.32];
+function applySize(){root.style.setProperty("--prayer-size",(1.1*SIZES[store.size]/SIZES[0]).toFixed(3)+"rem");}
+themeBtn.addEventListener("click",()=>{
+  const dark = root.getAttribute("data-theme")==="dark" ||
+    (!root.hasAttribute("data-theme") && matchMedia("(prefers-color-scheme:dark)").matches);
+  store.theme = dark?"light":"dark"; save(); applyTheme();
+});
+sizeBtn.addEventListener("click",()=>{store.size=(store.size+1)%SIZES.length;save();applySize();});
+applyTheme();applySize();
+
+/* ────────────── right now ────────────── */
+const NOW_PLAN=[
+  {from:4,  to:9,  id:"waking",   label:"This morning",           q:"Jesus, I offer Thee everything today."},
+  {from:9,  to:12, id:"computer", label:"Before the work begins", q:"Come, Holy Ghost. Order my priorities."},
+  {from:12, to:13, id:"midday",   label:"Midday",                 q:"Sacred Heart of Jesus, I place my trust in Thee."},
+  {from:13, to:18, id:"allatonce",label:"In the middle of it",    q:"One task at a time. One problem at a time. One hour at a time."},
+  {from:18, to:21, id:"workends", label:"The work is over",       q:"Jesus, I give Thee everything unfinished."},
+  {from:21, to:24, id:"night",    label:"Before sleep",           q:"Lord, I have done what I can. The rest I leave in Thy hands."},
+  {from:0,  to:4,  id:"rest",     label:"Still awake",            q:"Tomorrow's grace will come tomorrow."}
+];
+function refreshNow(){
+  const h=new Date().getHours();
+  const slot=NOW_PLAN.find(s=>h>=s.from&&h<s.to)||NOW_PLAN[0];
+  nowLabel.textContent=slot.label;
+  nowQuote.textContent=slot.q;
+  nowGo.textContent="Open “"+byId[slot.id].t+"”";
+  nowGo.onclick=()=>openPrayer(slot.id);
+  const hour=new Date().getHours();
+  greeting.textContent = hour<11 ? "A day with very little time left over"
+    : hour<18 ? "Pray in fragments. Between tasks is enough."
+    : "What remains unfinished can be given away.";
+}
+refreshNow();
+setInterval(refreshNow,60000);
+
+/* ────────────── three pauses ────────────── */
+function refreshPauses(){
+  const t=todayKey();
+  if(store.pauses.date!==t) store.pauses={date:t,morning:false,midday:false,night:false};
+  document.querySelectorAll(".ribbon").forEach(b=>{
+    b.setAttribute("aria-pressed", store.pauses[b.dataset.pause]?"true":"false");
+  });
+  const n=["morning","midday","night"].filter(k=>store.pauses[k]).length;
+  keptLine.textContent = n===3
+    ? "All three kept today. Nothing more is required."
+    : n===0 ? (store.kept>0 ? "Kept on "+store.kept+" day"+(store.kept===1?"":"s")+" so far." : "Tap one when you have prayed it.")
+    : n+" of 3 kept today.";
+}
+document.querySelectorAll(".ribbon").forEach(b=>{
+  b.addEventListener("click",()=>{
+    const k=b.dataset.pause;
+    store.pauses[k]=!store.pauses[k];
+    const all=["morning","midday","night"].every(x=>store.pauses[x]);
+    if(all && store.lastKept!==todayKey()){store.kept++;store.lastKept=todayKey();}
+    save();refreshPauses();
+  });
+});
+refreshPauses();
+
+/* ────────────── list rendering ────────────── */
+function itemRow(p){
+  const fav=store.favs.includes(p.id);
+  return `<button class="item" data-open="${p.id}">
+    <span>${p.t}</span>${fav?'<em class="star">✦</em>':""}<em>${p.secs}</em></button>`;
+}
+function renderList(){
+  let html="";
+  if(store.favs.length){
+    html+=`<div class="cat" data-cat="fav"><button class="cat-head" style="--c:var(--gilt)">
+      <b>Marked by me</b><em>${store.favs.length}</em>
+      <svg class="chev" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 6l4 4 4-4"/></svg>
+      </button><div class="cat-body">${store.favs.map(id=>byId[id]).filter(Boolean).map(itemRow).join("")}</div></div>`;
+  }
+  CATS.forEach(c=>{
+    const items=P.filter(p=>p.cat===c.id);
+    html+=`<div class="cat" data-cat="${c.id}"><button class="cat-head" style="--c:${c.color}">
+      <b>${c.name}</b><em>${items.length}</em>
+      <svg class="chev" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 6l4 4 4-4"/></svg>
+      </button><div class="cat-body">${items.map(itemRow).join("")}</div></div>`;
+  });
+  list.innerHTML=html;
+}
+function renderSearch(q){
+  const s=q.toLowerCase();
+  const hits=P.filter(p=>{
+    const text=p.t+" "+p.b.map(x=>x[1]).join(" ")+" "+(CATS.find(c=>c.id===p.cat)||{name:""}).name;
+    return text.toLowerCase().includes(s);
+  });
+  listHeading.textContent = hits.length ? hits.length+" prayer"+(hits.length===1?"":"s")+" found" : "Nothing found";
+  list.innerHTML = hits.length
+    ? `<div class="cat" open><div class="cat-body" style="border-top:0">${hits.map(itemRow).join("")}</div></div>`
+    : `<p class="empty">No prayer matches that word. Try “tired”, “mistake”, “cats”, or open the emergency prayer at the top.</p>`;
+  list.querySelectorAll(".cat").forEach(c=>c.setAttribute("open",""));
+}
+searchInput.addEventListener("input",e=>{
+  const v=e.target.value.trim();
+  if(v){renderSearch(v);}else{listHeading.textContent="Open to what I need";renderList();}
+});
+
+list.addEventListener("click",e=>{
+  const head=e.target.closest(".cat-head");
+  if(head){const c=head.parentElement;c.hasAttribute("open")?c.removeAttribute("open"):c.setAttribute("open","");return;}
+  const item=e.target.closest("[data-open]");
+  if(item) openPrayer(item.dataset.open);
+});
+renderList();
+
+/* ────────────── reading sheet ────────────── */
+let current=null;
+function openPrayer(id){
+  const p=byId[id]; if(!p) return;
+  current=id;
+  sheetTitle.textContent=p.t;
+  sheetMeta.textContent=p.secs;
+  sheet.style.setProperty("--c", catColor[p.cat] || "var(--red)");
+  sheetBody.innerHTML=p.b.map(([k,txt])=>{
+    if(k==="h") return `<h4>${txt}</h4>`;
+    if(k==="lead") return `<p class="lead">${txt}</p>`;
+    if(k==="aspiration") return `<p class="aspiration">${txt}</p>`;
+    if(k==="latin") return `<p class="latin">${txt}</p>`;
+    return `<p>${txt}</p>`;
+  }).join("");
+  sheetFav.setAttribute("aria-pressed", store.favs.includes(id)?"true":"false");
+  sheetFav.textContent = store.favs.includes(id) ? "✦ Marked" : "✦ Mark";
+  sheet.classList.add("open");
+  sheetScroll.scrollTop=0;
+  document.body.style.overflow="hidden";
+}
+function closeSheet(){
+  sheet.classList.remove("open");
+  document.body.style.overflow="";
+  current=null;
+}
+sheetBack.addEventListener("click",closeSheet);
+sheetDone.addEventListener("click",closeSheet);
+sosBtn.addEventListener("click",()=>openPrayer("sos"));
+sheetFav.addEventListener("click",()=>{
+  if(!current) return;
+  const i=store.favs.indexOf(current);
+  if(i>-1) store.favs.splice(i,1); else store.favs.push(current);
+  save();
+  sheetFav.setAttribute("aria-pressed", store.favs.includes(current)?"true":"false");
+  sheetFav.textContent = store.favs.includes(current) ? "✦ Marked" : "✦ Mark";
+  if(!searchInput.value.trim()) renderList();
+});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&sheet.classList.contains("open"))closeSheet();});
+
+/* app shortcut: ?go=<prayer id> opens straight into a prayer */
+try{
+  const go=new URLSearchParams(location.search).get("go");
+  if(go && byId[go]) openPrayer(go);
+}catch(e){}
+
+/* ────────────── install & offline ────────────── */
+if("serviceWorker" in navigator){
+  window.addEventListener("load",()=>{
+    navigator.serviceWorker.register("sw.js").catch(()=>{});
+  });
+}
+let deferredPrompt=null;
+window.addEventListener("beforeinstallprompt",e=>{
+  e.preventDefault(); deferredPrompt=e; installBtn.hidden=false;
+});
+installBtn.addEventListener("click",async()=>{
+  if(!deferredPrompt) return;
+  installBtn.hidden=true;
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+  deferredPrompt=null;
+});
+window.addEventListener("appinstalled",()=>{
+  installBtn.hidden=true; installedNote.hidden=false; deferredPrompt=null;
+});
+if(matchMedia("(display-mode: standalone)").matches || navigator.standalone){
+  installedNote.hidden=false;
+}
+</script>
+</body>
+</html>

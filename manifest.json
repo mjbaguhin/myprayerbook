@@ -1,0 +1,28 @@
+{
+  "name": "My Prayerbook",
+  "short_name": "Prayerbook",
+  "description": "A traditional Catholic prayerbook for a very busy life. Short prayers for work, pressure, exhaustion and rest.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F2E9D8",
+  "theme_color": "#6B1721",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["lifestyle", "books", "productivity"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Emergency prayer",
+      "short_name": "Emergency",
+      "description": "Sixty seconds when everything is too much",
+      "url": "./index.html?go=sos",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
