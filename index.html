@@ -21,6 +21,7 @@
   --shadow:rgba(60,40,20,.14);
   --green:#3A6B45; --red:#97222B; --violet:#5B3A77; --rose:#A3496B;
   --blue:#2C4A7C; --gold:#94742B; --slate:#4A423C;
+  --teal:#1C6357; --copper:#8A5320; --indigo:#33357A;
   --sos-bg:#8E2029; --sos-fg:#FDF3EC;
   --prayer-size:1.1rem;
   box-sizing:border-box;
@@ -35,6 +36,7 @@
     --gilt:#CDA857; --shadow:rgba(0,0,0,.5); --sos-bg:#7A1B23; --sos-fg:#F6E3DC;
     --green:#79B187; --red:#E0757B; --violet:#B294D4; --rose:#DE93AF;
     --blue:#8BABE0; --gold:#CDA857; --slate:#B5A99C;
+    --teal:#79C3B5; --copper:#DFA469; --indigo:#A0A4E8;
   }
 }
 :root[data-theme="dark"]{
@@ -43,6 +45,7 @@
   --shadow:rgba(0,0,0,.5);
   --green:#79B187; --red:#E0757B; --violet:#B294D4; --rose:#DE93AF;
   --blue:#8BABE0; --gold:#CDA857; --slate:#B5A99C;
+  --teal:#79C3B5; --copper:#DFA469; --indigo:#A0A4E8;
   --sos-bg:#7A1B23; --sos-fg:#F6E3DC;
 }
 *,*::before,*::after{box-sizing:inherit}
@@ -307,13 +310,16 @@ footer .sig{
 <script>
 /* ────────────── the prayers ────────────── */
 const CATS = [
-  {id:"rhythm", name:"Begin, pause, end the day", color:"var(--green)", note:"waking · computer · midday · evening · night"},
-  {id:"urgent", name:"When everything is urgent", color:"var(--red)", note:"deadlines · two departments · hard messages"},
-  {id:"short",  name:"When I fall short", color:"var(--violet)", note:"mistakes · pressure · asking for help"},
-  {id:"empty",  name:"When I have nothing left", color:"var(--rose)", note:"tired mind · tired body · no time"},
-  {id:"care",   name:"The ones in my care", color:"var(--blue)", note:"employers · coworkers · the cats"},
-  {id:"heaven", name:"Heaven's help", color:"var(--gold)", note:"St Joseph · Our Lady · my Guardian Angel"},
-  {id:"quick",  name:"Ten seconds or less", color:"var(--slate)", note:"aspirations · the minimum · my rule"}
+  {id:"rhythm", name:"Begin, pause, end the day", color:"var(--green)"},
+  {id:"urgent", name:"When everything is urgent", color:"var(--red)"},
+  {id:"protect",name:"Protection and deliverance", color:"var(--indigo)"},
+  {id:"words",  name:"When I must find the words", color:"var(--teal)"},
+  {id:"meeting",name:"Meetings and being put on the spot", color:"var(--copper)"},
+  {id:"short",  name:"When I fall short", color:"var(--violet)"},
+  {id:"empty",  name:"When I have nothing left", color:"var(--rose)"},
+  {id:"care",   name:"The ones in my care", color:"var(--blue)"},
+  {id:"heaven", name:"Heaven's help", color:"var(--gold)"},
+  {id:"quick",  name:"Ten seconds or less", color:"var(--slate)"}
 ];
 
 const P = [
@@ -321,6 +327,7 @@ const P = [
 {id:"waking", cat:"rhythm", t:"Upon waking", secs:"about 1 minute", b:[
  ["lead","In the name of the Father, and of the Son, and of the Holy Ghost. Amen."],
  ["p","O Jesus, through the Immaculate Heart of Mary, I offer Thee my prayers, works, joys, and sufferings of this day, for all the intentions of Thy Sacred Heart, in union with the Holy Sacrifice of the Mass throughout the world."],
+ ["p","I offer Thee especially my work today: every task completed, every problem solved, every interruption, every pressure, every difficult decision, and every hidden sacrifice. Let none of it be wasted. Amen."],
  ["p","My Lord Jesus Christ, Thou knowest the work waiting for me. Before I look at messages, deadlines, problems, reports, requests, and urgent tasks, I look first to Thee."],
  ["p","I thank Thee for my employment, for work that I genuinely love, for the income and blessings that provide for my responsibilities, and for the kindness and consideration I have received through my work."],
  ["p","Keep gratitude alive in me even when I am tired. But Thou also knowest my limits. Give me strength for today's duties — not tomorrow's burdens. Give me a clear mind, an orderly heart, patience under pressure, wisdom in decisions, and charity toward everyone I encounter."],
@@ -451,6 +458,7 @@ const P = [
  ["h","Morning"],["aspiration","Jesus, I offer Thee everything today."],
  ["h","During work"],["aspiration","Sacred Heart of Jesus, I trust in Thee."],
  ["h","When overwhelmed"],["aspiration","Come, Holy Ghost. Show me what to do next."],
+ ["h","When questioned"],["aspiration","Jesus, peace. Holy Ghost, help me listen."],
  ["h","When work ends"],["aspiration","Jesus, I give Thee everything unfinished."],
  ["h","Before sleep"],["p","Jesus, Mary, and Joseph, I give you my heart and my soul. Jesus, Mary, and Joseph, assist me in my last agony. Jesus, Mary, and Joseph, may I breathe forth my soul in peace with you. Amen."]]},
 
@@ -471,6 +479,189 @@ const P = [
  ["p","I will do what reasonably belongs to me. I will ask God for wisdom concerning what does not. And when I have reached the limit of what I can accomplish today, I will say: Lord, I have done what I can. The rest I leave in Thy hands."],
  ["p","Sacred Heart of Jesus, I trust in Thee. Immaculate Heart of Mary, pray for me. Saint Joseph, pray for me. Amen."]]},
 
+/* ── words: Slack, customer service, memory, clarity ── */
+{id:"clarity", cat:"words", t:"For clarity, memory and communication", secs:"1 minute", b:[
+ ["p","Come, Holy Ghost, fill my mind with Thy light and my heart with Thy peace. Sometimes I know what I mean, but I struggle to put it into the right words. Sometimes information comes too quickly and I struggle to remember what matters. Lord, help my mind."],
+ ["p","Give me clarity when my thoughts become confused, understanding when information comes quickly, attention when someone is explaining something important, and memory for the things I truly need to remember."],
+ ["p","Help me find simple words without overthinking them. Let my words sound like me — not artificial, not complicated, not overly polished — but clear, sincere, competent, and respectful."],
+ ["p","Protect me from wasting precious time trying to make every sentence perfect. Teach me the difference between something that needs careful thought and something that simply needs a clear answer. Amen."]]},
+
+{id:"slack", cat:"words", t:"Before Slack", secs:"15 seconds", b:[
+ ["lead","Come, Holy Ghost."],
+ ["p","Help me understand what they are asking. Help me answer simply. Let my words be accurate, natural, respectful, and my own."],
+ ["aspiration","No overthinking. No unnecessary words. Just truth and clarity. Amen."]]},
+
+{id:"cs", cat:"words", t:"Before customer service", secs:"20 seconds", b:[
+ ["p","Jesus, give me patience. Holy Ghost, give me the right words. Help me understand the customer's real problem. Let my answer be accurate, compassionate, prudent, and helpful. Protect me from mistakes caused by exhaustion or haste. Amen."]]},
+
+{id:"sentence", cat:"words", t:"When I cannot form the sentence", secs:"20 seconds", b:[
+ ["lead","Come, Holy Ghost. Help me say simply what I mean."],
+ ["aspiration","What happened? What do they need to know? What do I need from them?"],
+ ["p","Lord, free me from believing that every message must sound perfect. Let it be clear, accurate, kind, and mine. Amen."]]},
+
+{id:"memory", cat:"words", t:"When my memory fails me", secs:"30 seconds", b:[
+ ["p","Jesus, my mind is tired. What I have forgotten, help me recover if I need it. What I must remember, bring back to my mind at the proper time. Teach me to write down what should not be entrusted to memory alone."],
+ ["p","Keep me from becoming frightened or ashamed when I forget something. Help me calmly check my notes, records, messages, or instructions and continue."],
+ ["p","Come, Holy Ghost, enlighten my understanding and strengthen my memory. Amen."]]},
+
+{id:"tools", cat:"words", t:"When I use tools to help me", secs:"30 seconds", b:[
+ ["p","Lord, I thank Thee for every legitimate tool that makes difficult work easier. Give me prudence in using them. Let them assist my judgment, not replace the judgment Thou hast given me."],
+ ["p","Help me understand what I send before I send it. Help me keep my own voice. Help me learn from the assistance I receive so that, little by little, tasks that are difficult today may become easier tomorrow."],
+ ["p","Do not let a tool meant to save time consume even more of it. Give me simplicity, efficiency, and discernment. Amen."]]},
+
+/* ── meetings ── */
+{id:"beforemeeting", cat:"meeting", t:"Before an important meeting", secs:"45 seconds", b:[
+ ["p","Come, Holy Ghost. Open my understanding. Help me follow the discussion. Help me recognize what concerns my responsibilities. Help me remember decisions, instructions, deadlines, and action items."],
+ ["p","When I do not understand something, give me humility to ask. When I am asked a question, keep me calm. I do not need to answer instantly. Give me the words I need when I need them."],
+ ["p","Holy Ghost, enlighten my mind. Our Lady, Seat of Wisdom, pray for me. Saint Joseph, pray for me. My Guardian Angel, assist me. Amen."]]},
+
+{id:"onthespot", cat:"meeting", t:"When I am put on the spot", secs:"45 seconds", b:[
+ ["p","My Jesus, when a question is directed to me and my heart begins to race, the sound of my own heartbeat can seem louder than the words being spoken. My thoughts scatter and what was clear becomes vague."],
+ ["p","Lord, enter this moment. Quiet my heart. There is no emergency here. I am simply being asked a question."],
+ ["p","Give me enough interior silence to hear it. Do not let fear answer before my understanding has caught up. Slow my thoughts. Let the words reach my mind. Help me recognize exactly what information is being requested. Only then give me the words to respond."],
+ ["p","Jesus, calm my heart. Holy Ghost, enlighten my understanding. Our Lady, Seat of Wisdom, remain beside me. Amen."]]},
+
+{id:"silentmeeting", cat:"meeting", t:"My silent meeting prayer", secs:"5 seconds", b:[
+ ["h","When I hear my name"],["aspiration","Jesus, peace. Holy Ghost, help me listen."],
+ ["h","While the question is being asked"],["aspiration","Understand first. Answer second."],
+ ["h","Before answering"],["aspiration","Come, Holy Ghost."]]},
+
+{id:"meetingrule", cat:"meeting", t:"My meeting rule", secs:"read before joining", b:[
+ ["aspiration","Hear → Pause → Understand → Answer"],
+ ["p","I do not have to answer the instant the question ends. I may pause for two or three seconds. During that pause:"],
+ ["aspiration","1. What did they ask?"],
+ ["aspiration","2. What information do they actually want?"],
+ ["aspiration","3. What is the shortest direct answer?"],
+ ["p","Then I answer. Only afterward, if necessary, do I give background or explanation."]]},
+
+{id:"notsure", cat:"meeting", t:"When I am not sure I understood", secs:"10 seconds", b:[
+ ["p","Lord, give me humility to clarify instead of guessing."],
+ ["h","I may say"],
+ ["aspiration","“Just to make sure I understood — are you asking about ___?”"],
+ ["aspiration","“Do you mean the current status, or what I recommend we do next?”"],
+ ["aspiration","“Sorry, could you repeat the question? I want to make sure I am answering what you are asking.”"],
+ ["p","There is no shame in making sure I understand before answering."]]},
+
+{id:"needtime", cat:"meeting", t:"When I need time to think", secs:"10 seconds", b:[
+ ["p","Jesus, keep me from believing that a few seconds of silence means failure."],
+ ["h","I may say"],
+ ["aspiration","“Give me a second to think about that.”"],
+ ["aspiration","“I do not want to give you the wrong information. Let me verify that and get back to you.”"],
+ ["p","Help me prefer an accurate answer after checking over an immediate answer that may be wrong."]]},
+
+{id:"wrongq", cat:"meeting", t:"When I answered the wrong question", secs:"10 seconds", b:[
+ ["p","Lord, keep embarrassment from taking over my mind. Let me simply correct myself:"],
+ ["aspiration","“Sorry, I misunderstood your question. You are asking about ___. In that case…”"],
+ ["p","Then let me continue. No panic. No long apology. No punishing myself afterward. Correct the answer and continue with the meeting."]]},
+
+/* ── additions to existing categories ── */
+{id:"behind", cat:"urgent", t:"When I am falling behind", secs:"30 seconds", b:[
+ ["p","Jesus, I am behind again. The unfinished work frightens me. But anxiety will not complete it. Show me what matters most right now. I give Thee everything else."],
+ ["p","Help me finish one thing before carrying ten unfinished things inside my mind."],
+ ["aspiration","One task. One decision. One problem. One moment with Thee. Amen."]]},
+
+{id:"manager", cat:"short", t:"For my responsibilities as a manager", secs:"45 seconds", b:[
+ ["p","My Lord, I have been entrusted with responsibilities in Catalog and Customer Service. Where I am weak, teach me. Where I lack knowledge, help me learn. Where I misunderstand, help me clarify. Where my memory fails, teach me to rely upon good notes and systems. Where I become overwhelmed, help me establish priorities. Where I need assistance, give me humility to ask."],
+ ["p","Do not let fear of appearing incapable cause me to speak before I understand. Make me teachable, prudent, attentive, and calm. Give me grace to become better at my responsibilities little by little rather than demanding perfection from myself immediately. Amen."]]},
+
+{id:"cannotcarry", cat:"short", t:"When I cannot carry two departments alone", secs:"1 minute", b:[
+ ["p","My God, I am grateful for my work, the trust placed in me, the compensation and blessings I receive, my bosses, and my coworkers. I do not want exhaustion to make me ungrateful. But neither do I want gratitude to make me afraid of telling the truth."],
+ ["p","If these responsibilities have genuinely become too much for one person, give me wisdom to recognize it. If I need additional help, give me courage to say so respectfully. If duties need to be delegated, show the right solution. If priorities need to change, help me communicate that clearly."],
+ ["aspiration","Lord, I do not ask to escape work. I ask for enough order, assistance, time, clarity, and strength to do my work well without destroying myself trying to do everything. Amen."]]},
+
+{id:"manual", cat:"empty", t:"When the manual work never ends", secs:"30 seconds", b:[
+ ["p","My Lord, Thou seest the hours hidden inside checking, monitoring, auditing, investigating, correcting, documenting, following up, and checking again. Give me perseverance for necessary work."],
+ ["p","But give me wisdom to recognize when the amount of work has become greater than one person can reasonably maintain."],
+ ["aspiration","Do not let my willingness to work hide a genuine need for help."]]},
+
+{id:"seatofwisdom", cat:"heaven", t:"To Our Lady, Seat of Wisdom", secs:"45 seconds", b:[
+ ["p","Most Blessed Virgin Mary, Sedes Sapientiae — Seat of Wisdom, I place my tired mind beneath thy motherly care."],
+ ["p","Obtain for me from thy Divine Son clarity without anxiety, memory without fear, speech without confusion, prudence without hesitation, and diligence without destroying my peace."],
+ ["p","When my own words are difficult to find, help me speak simply. When my mind is overloaded, help me become quiet. When I am afraid that I cannot keep up, lead me back to thy Divine Son."],
+ ["p","Our Lady, Seat of Wisdom, pray for me. Amen."]]},
+
+/* ── protection and deliverance ── */
+{id:"workprotection", cat:"protect", t:"For protection in my work", secs:"1 minute", b:[
+ ["lead","In the name of the Father, and of the Son, and of the Holy Ghost. Amen."],
+ ["p","O Almighty and Eternal God, I place my employment, my responsibilities, my work, my decisions, and everything entrusted to my care beneath Thy sovereign protection."],
+ ["p","Thou alone knowest every difficulty surrounding my work. Thou seest the problems that appear one after another. Thou knowest the Catalog issues that require investigation and correction. Thou knowest the Customer Service problems that require patience and judgment."],
+ ["p","Thou knowest the unexpected complications, mistakes, urgent requests, delays, misunderstandings, technical difficulties, and time-consuming tasks that continually arise. Sometimes it seems that as soon as one problem is resolved, another takes its place."],
+ ["p","Lord, I do not know all the causes of these difficulties. Therefore I refuse to judge what I cannot know. But I place every known and unknown cause into Thy hands. Amen."]]},
+
+{id:"malice", cat:"protect", t:"From malice and spiritual harm", secs:"1 minute", b:[
+ ["p","O Lord Jesus Christ, if anyone bears resentment, envy, anger, or ill will toward me, have mercy upon that person and upon me. If anyone should wish for my failure, I entrust that person entirely to Thee."],
+ ["aspiration","I ask for no revenge. I ask for no harm to come upon anyone. I ask only for Thy protection."],
+ ["p","If there is any spiritual danger surrounding me or my work, whether known or unknown to me, preserve me from it according to Thy holy will."],
+ ["p","Protect my mind from fear. Protect my judgment from confusion. Protect my work from dishonesty and injustice. Protect my relationships with my employers, coworkers, and customers. Protect me from temptation, discouragement, bitterness, pride, anger, despair, and suspicion."],
+ ["p","And especially protect me from becoming so afraid of hidden enemies that I begin to see malice where there may be only ordinary human difficulties."],
+ ["aspiration","Let truth, not fear, govern my mind. Amen."]]},
+
+{id:"oneafter", cat:"protect", t:"When problems keep coming one after another", secs:"40 seconds", b:[
+ ["lead","My God, another problem has appeared."],
+ ["p","I will not immediately conclude that everything is going wrong. I will not surrender myself to fear. I will not assume that someone is against me."],
+ ["p","I will examine the problem calmly. I will determine what happened. I will solve what I can. I will ask for help when necessary. And what lies beyond my control, I surrender to Divine Providence."],
+ ["aspiration","Jesus, Thou art still here. This problem is not greater than Thy Providence. Show me the next step. Amen."]]},
+
+{id:"michael", cat:"protect", t:"To Saint Michael", secs:"25 seconds", b:[
+ ["p","Saint Michael the Archangel, defend us in battle; be our protection against the wickedness and snares of the devil. May God rebuke him, we humbly pray; and do thou, O Prince of the heavenly host, by the power of God, thrust into hell Satan and all the evil spirits who prowl about the world seeking the ruin of souls. Amen."]]},
+
+{id:"mantle", cat:"protect", t:"To Our Lady, beneath thy mantle", secs:"40 seconds", b:[
+ ["p","Most Blessed Virgin Mary, Immaculate Mother of God, cover me beneath thy maternal mantle. Keep me close to thy Divine Son."],
+ ["p","Protect my mind from fear and confusion. Protect my heart from discouragement. Protect me from spiritual dangers."],
+ ["p","Obtain for me purity of intention, wisdom in decisions, patience in difficulties, and perseverance in duty. When my work becomes overwhelming, lead me quietly to Jesus."],
+ ["aspiration","O Mary conceived without sin, pray for us who have recourse to thee. Amen."]]},
+
+{id:"consecration", cat:"protect", t:"Consecration of my workday to the Sacred Heart", secs:"1 minute", b:[
+ ["p","Most Sacred Heart of Jesus, I give Thee my work. I give Thee Catalog. I give Thee Customer Service. I give Thee every ticket, listing, case, report, audit, message, meeting, investigation, correction, deadline, and unresolved problem."],
+ ["p","I give Thee the things I understand. I give Thee the things I do not understand. I give Thee the work I will finish today. I give Thee the work that will remain unfinished."],
+ ["p","Protect me from evil. Protect me from fear. Protect me from confusion. Protect me from discouragement. Give me wisdom. Give me order. Give me sufficient time. Give me assistance where assistance is needed. And let everything I do today be offered for Thy greater glory."],
+ ["aspiration","Most Sacred Heart of Jesus, I trust in Thee."],
+ ["aspiration","Immaculate Heart of Mary, pray for me."],
+ ["aspiration","Saint Joseph, pray for me."],
+ ["aspiration","Saint Michael the Archangel, defend me."],
+ ["aspiration","My holy Guardian Angel, guard and guide me."],
+ ["lead","In the name of the Father, and of the Son, and of the Holy Ghost. Amen."]]},
+
+{id:"protect10", cat:"protect", t:"Work protection prayer", secs:"10 seconds", b:[
+ ["lead","When there is absolutely no time."],
+ ["aspiration","Jesus, protect my work and my mind."],
+ ["aspiration","Holy Ghost, show me the easiest right way."],
+ ["aspiration","Saint Michael, defend me."],
+ ["aspiration","Saint Joseph, assist me."],
+ ["aspiration","Sacred Heart of Jesus, I trust in Thee. Amen."]]},
+
+/* ── when the work itself will not yield ── */
+{id:"time", cat:"urgent", t:"For time", secs:"1 minute", b:[
+ ["p","Lord Jesus Christ, Thou art Lord even of my time. I continually feel that there are not enough hours for everything entrusted to me. Therefore I give Thee my working hours."],
+ ["p","Guard me from unnecessary distractions. Guard me from perfectionism that consumes time without improving the result. Guard me from repeatedly checking what has already been sufficiently checked. Guard me from spending too long composing a simple message. Guard me from confusion that makes a short task become a long one."],
+ ["p","Help me recognize quickly what deserves careful attention and what merely needs to be completed properly and moved forward."],
+ ["p","Grant that work which normally consumes much time may, when it pleases Thee, become straightforward and quick. Let me find the information I need. Let solutions become apparent. Let communication become clearer. Let unnecessary complications be avoided. Let me work with clarity, order, accuracy, prudence, and speed."],
+ ["aspiration","But never let my desire for speed make me careless. Amen."]]},
+
+{id:"easier", cat:"urgent", t:"That difficult work may become easier", secs:"45 seconds", b:[
+ ["p","My Jesus, there are tasks before me that seem complicated. There are problems that normally consume hours. There are investigations that require many steps. There are manual tasks that drain my time and attention. There are problems whose solutions I cannot immediately see."],
+ ["aspiration","Make straight what is tangled. Make clear what is confusing. Make manageable what seems overwhelming."],
+ ["p","Help me discover faster and better ways of accomplishing repetitive work. When there is an easier legitimate method, help me find it. When something can be simplified, show me how. When something can be delegated, give me wisdom to recognize it. When a tool can safely save time, teach me to use it prudently. When something unnecessary can be eliminated, help me recognize it."],
+ ["p","When I must simply persevere through difficult work, give me strength. Amen."]]},
+
+{id:"difficulttask", cat:"urgent", t:"Before beginning a difficult task", secs:"25 seconds", b:[
+ ["lead","Come, Holy Ghost. What looks difficult to me is not difficult to God."],
+ ["p","Enlighten my mind. Show me where to begin. Show me the shortest legitimate path to the solution. Help me notice what I am overlooking. Give me concentration. Protect me from mistakes."],
+ ["aspiration","Jesus, make easy what may rightly be made easy, and give me strength for what must remain difficult. Amen."]]},
+
+{id:"solutionquick", cat:"urgent", t:"When I need a solution quickly", secs:"10 seconds", b:[
+ ["aspiration","Jesus, I cannot see the solution yet, but Thou canst."],
+ ["aspiration","Holy Ghost, enlighten me."],
+ ["aspiration","Saint Joseph, assist me."],
+ ["aspiration","My Guardian Angel, guide me."],
+ ["aspiration","Show me the next right step. Amen."]]},
+
+{id:"josephwork", cat:"heaven", t:"To Saint Joseph for my employment", secs:"45 seconds", b:[
+ ["p","Glorious Saint Joseph, faithful guardian of the Holy Family and model of those who labor, protect my employment and the work entrusted to me."],
+ ["p","Help me work honestly, carefully, peacefully, and efficiently. Assist me when problems seem impossible. Obtain for me practical wisdom. Help me recognize solutions. Help me use my time well. Protect the good relationships I have with my employers and coworkers."],
+ ["p","And when the burden becomes greater than I can reasonably carry, obtain for me the humility and courage to ask for assistance."],
+ ["aspiration","Saint Joseph, patron of workers, pray for me. Amen."]]},
+
 /* ── emergency (not in a category list) ── */
 {id:"sos", cat:"sos", t:"A terrible workday", secs:"60 seconds", b:[
  ["lead","In the name of the Father, and of the Son, and of the Holy Ghost. Amen."],
@@ -483,12 +674,18 @@ const P = [
  ["aspiration","Come, Holy Ghost."],
  ["p","Jesus, I trust the next moment to Thee. Amen."]]},
 
-{id:"card", cat:"sos", t:"Emergency prayer card", secs:"one line each", b:[
+{id:"card", cat:"sos", t:"Workday emergency card", secs:"one line each", b:[
  ["h","When I start"],["aspiration","Jesus, I offer Thee everything today."],
- ["h","When everything is urgent"],["aspiration","Come, Holy Ghost. Show me the next right thing."],
+ ["h","Too many urgent tasks"],["aspiration","Come, Holy Ghost. Show me the next right thing."],
+ ["h","Before Slack"],["aspiration","Help me answer simply, accurately, naturally, and in my own voice."],
+ ["h","When my name is called"],["aspiration","Jesus, peace. Holy Ghost, help me listen."],
+ ["h","The meeting rule"],["aspiration","Hear → Pause → Understand → Answer"],
+ ["h","The question becomes vague"],["aspiration","“Sorry, could you repeat the question? I want to make sure I am answering what you are asking.”"],
+ ["h","I need time"],["aspiration","“Give me a second to think about that.”"],
+ ["h","I do not know yet"],["aspiration","“I do not want to give you the wrong information. Let me verify that and get back to you.”"],
+ ["h","I misunderstood"],["aspiration","“Sorry, I misunderstood your question. You are asking about ___. In that case…”"],
  ["h","When I am panicking"],["aspiration","Sacred Heart of Jesus, I trust in Thee."],
- ["h","When I cannot think"],["aspiration","Jesus, give me calmness, clarity, accuracy, and good judgment."],
- ["h","When I need help"],["aspiration","Holy Ghost, give me humility and courage to speak truth with charity."],
+ ["h","When the work will not yield"],["aspiration","Holy Ghost, show me the easiest right way. Saint Michael, defend me."],
  ["h","When I am exhausted"],["aspiration","Jesus, I can do no more without Thee. Help me."],
  ["h","When I stop work"],["aspiration","Jesus, I give Thee everything unfinished."],
  ["h","Before sleep"],["aspiration","Lord, I have done what I can. The rest I leave in Thy hands."]]}
