@@ -1,7 +1,7 @@
 /* My Prayerbook — offline service worker.
    Everything is precached on install, so the app opens with no signal at all. */
 
-const CACHE = "prayerbook-v3";
+const CACHE = "prayerbook-v4";
 const ASSETS = [
   "./",
   "./index.html",

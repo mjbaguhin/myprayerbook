@@ -21,7 +21,7 @@
   --shadow:rgba(60,40,20,.14);
   --green:#3A6B45; --red:#97222B; --violet:#5B3A77; --rose:#A3496B;
   --blue:#2C4A7C; --gold:#94742B; --slate:#4A423C;
-  --teal:#1C6357; --copper:#8A5320; --indigo:#33357A;
+  --teal:#1C6357; --copper:#8A5320; --indigo:#33357A; --olive:#5A6B18;
   --sos-bg:#8E2029; --sos-fg:#FDF3EC;
   --prayer-size:1.1rem;
   box-sizing:border-box;
@@ -36,7 +36,7 @@
     --gilt:#CDA857; --shadow:rgba(0,0,0,.5); --sos-bg:#7A1B23; --sos-fg:#F6E3DC;
     --green:#79B187; --red:#E0757B; --violet:#B294D4; --rose:#DE93AF;
     --blue:#8BABE0; --gold:#CDA857; --slate:#B5A99C;
-    --teal:#79C3B5; --copper:#DFA469; --indigo:#A0A4E8;
+    --teal:#79C3B5; --copper:#DFA469; --indigo:#A0A4E8; --olive:#BFCE72;
   }
 }
 :root[data-theme="dark"]{
@@ -45,7 +45,7 @@
   --shadow:rgba(0,0,0,.5);
   --green:#79B187; --red:#E0757B; --violet:#B294D4; --rose:#DE93AF;
   --blue:#8BABE0; --gold:#CDA857; --slate:#B5A99C;
-  --teal:#79C3B5; --copper:#DFA469; --indigo:#A0A4E8;
+  --teal:#79C3B5; --copper:#DFA469; --indigo:#A0A4E8; --olive:#BFCE72;
   --sos-bg:#7A1B23; --sos-fg:#F6E3DC;
 }
 *,*::before,*::after{box-sizing:inherit}
@@ -312,6 +312,7 @@ footer .sig{
 const CATS = [
   {id:"rhythm", name:"Begin, pause, end the day", color:"var(--green)"},
   {id:"urgent", name:"When everything is urgent", color:"var(--red)"},
+  {id:"yield",  name:"When the work will not yield", color:"var(--olive)"},
   {id:"protect",name:"Protection and deliverance", color:"var(--indigo)"},
   {id:"words",  name:"When I must find the words", color:"var(--teal)"},
   {id:"meeting",name:"Meetings and being put on the spot", color:"var(--copper)"},
@@ -638,18 +639,18 @@ const P = [
  ["p","Grant that work which normally consumes much time may, when it pleases Thee, become straightforward and quick. Let me find the information I need. Let solutions become apparent. Let communication become clearer. Let unnecessary complications be avoided. Let me work with clarity, order, accuracy, prudence, and speed."],
  ["aspiration","But never let my desire for speed make me careless. Amen."]]},
 
-{id:"easier", cat:"urgent", t:"That difficult work may become easier", secs:"45 seconds", b:[
+{id:"easier", cat:"yield", t:"That difficult work may become easier", secs:"45 seconds", b:[
  ["p","My Jesus, there are tasks before me that seem complicated. There are problems that normally consume hours. There are investigations that require many steps. There are manual tasks that drain my time and attention. There are problems whose solutions I cannot immediately see."],
  ["aspiration","Make straight what is tangled. Make clear what is confusing. Make manageable what seems overwhelming."],
  ["p","Help me discover faster and better ways of accomplishing repetitive work. When there is an easier legitimate method, help me find it. When something can be simplified, show me how. When something can be delegated, give me wisdom to recognize it. When a tool can safely save time, teach me to use it prudently. When something unnecessary can be eliminated, help me recognize it."],
  ["p","When I must simply persevere through difficult work, give me strength. Amen."]]},
 
-{id:"difficulttask", cat:"urgent", t:"Before beginning a difficult task", secs:"25 seconds", b:[
+{id:"difficulttask", cat:"yield", t:"Before beginning a difficult task", secs:"25 seconds", b:[
  ["lead","Come, Holy Ghost. What looks difficult to me is not difficult to God."],
  ["p","Enlighten my mind. Show me where to begin. Show me the shortest legitimate path to the solution. Help me notice what I am overlooking. Give me concentration. Protect me from mistakes."],
  ["aspiration","Jesus, make easy what may rightly be made easy, and give me strength for what must remain difficult. Amen."]]},
 
-{id:"solutionquick", cat:"urgent", t:"When I need a solution quickly", secs:"10 seconds", b:[
+{id:"solutionquick", cat:"yield", t:"When I need a solution quickly", secs:"10 seconds", b:[
  ["aspiration","Jesus, I cannot see the solution yet, but Thou canst."],
  ["aspiration","Holy Ghost, enlighten me."],
  ["aspiration","Saint Joseph, assist me."],
@@ -661,6 +662,50 @@ const P = [
  ["p","Help me work honestly, carefully, peacefully, and efficiently. Assist me when problems seem impossible. Obtain for me practical wisdom. Help me recognize solutions. Help me use my time well. Protect the good relationships I have with my employers and coworkers."],
  ["p","And when the burden becomes greater than I can reasonably carry, obtain for me the humility and courage to ask for assistance."],
  ["aspiration","Saint Joseph, patron of workers, pray for me. Amen."]]},
+
+/* ── deliverance additions ── */
+{id:"deliverance", cat:"protect", t:"For deliverance over my work", secs:"1 to 2 minutes", b:[
+ ["lead","In the name of the Father, and of the Son, and of the Holy Ghost. Amen."],
+ ["p","O Lord Jesus Christ, Son of the living God, my Savior, my King, and my refuge, I place myself, my work, my employment, and everything entrusted to my responsibility under Thy sovereign dominion and protection."],
+ ["p","I place before Thee my work in Catalog and Customer Service: every listing, case, ticket, report, audit, investigation, correction, communication, meeting, deadline, decision, and problem that I must handle."],
+ ["p","Lord Jesus Christ, if any evil influence, temptation, malice, envy, ill will, deception, confusion, discouragement, or spiritual attack should ever be directed against me or my work, I beg Thee to rebuke it and render it powerless."],
+ ["aspiration","By Thy Precious Blood, protect me."],
+ ["aspiration","By Thy Holy Cross, defend me."],
+ ["aspiration","By Thy Sacred Heart, shelter me."],
+ ["aspiration","By Thy holy Name, preserve me."],
+ ["p","Let nothing contrary to Thy holy will have dominion over me. Let every work of darkness be defeated by Thy power. Let every temptation to fear, confusion, discouragement, anger, suspicion, or despair be driven far from me."],
+ ["aspiration","I belong to Thee, O Jesus. My work belongs to Thee. My mind belongs to Thee. My abilities belong to Thee. My future belongs to Thee. Amen."]]},
+
+{id:"confusion", cat:"protect", t:"Against confusion and disorder", secs:"45 seconds", b:[
+ ["p","O Lord, if the difficulties before me have merely ordinary causes, give me the intelligence, patience, and perseverance necessary to solve them."],
+ ["p","If mistakes have been made, help me find them. If systems are failing, help me understand why. If something has been overlooked, bring it to my attention. If another person must act, lead me to the right person. If I need assistance, give me humility to ask. If there is a simpler solution, help me discover it quickly."],
+ ["p","And if there should be any genuine spiritual danger involved, Thou, O Lord, rebuke it and protect me from it."],
+ ["aspiration","I will not surrender myself to fear or suspicion. My confidence is in Jesus Christ. Amen."]]},
+
+{id:"anotherprotect", cat:"protect", t:"Protection when another problem appears", secs:"30 seconds", b:[
+ ["aspiration","Jesus Christ, my Lord and my God, protect me and my work."],
+ ["p","If this difficulty has an ordinary cause, help me find and correct it. If there is any spiritual danger, rebuke it and preserve me from it."],
+ ["aspiration","Holy Ghost, enlighten my mind."],
+ ["aspiration","Blessed Virgin Mary, protect me beneath thy mantle."],
+ ["aspiration","Saint Michael, defend me."],
+ ["aspiration","Saint Joseph, assist me in my work."],
+ ["aspiration","My Guardian Angel, guard and guide me."],
+ ["p","Jesus, I trust in Thee. Show me the problem. Show me the solution. Show me the next right step. Amen."]]},
+
+{id:"fewseconds", cat:"protect", t:"When I have only a few seconds", secs:"10 seconds", b:[
+ ["aspiration","Lord Jesus Christ, cover me and my work with Thy Precious Blood."],
+ ["aspiration","Rebuke every evil and preserve me from every danger."],
+ ["aspiration","Holy Ghost, enlighten me."],
+ ["aspiration","Saint Michael, defend me."],
+ ["aspiration","Saint Joseph, assist me."],
+ ["aspiration","Jesus, I trust in Thee."],
+ ["lead","In the name of the Father, and of the Son, and of the Holy Ghost. Amen."]]},
+
+{id:"makeeasy", cat:"yield", t:"Make the difficult easy according to Thy will", secs:"45 seconds", b:[
+ ["lead","O Jesus, make clear what is confusing. Make orderly what is disordered. Make manageable what seems overwhelming."],
+ ["p","Show me the solution to difficult problems. Help me accomplish time-consuming tasks efficiently. Help me find information quickly. Help me understand what I read. Help me recognize errors. Help me communicate clearly. Help me remember what I need. Help me finish what must be finished."],
+ ["p","When there is a legitimate shortcut, show it to me. When something can be automated, simplified, delegated, or eliminated, give me wisdom to recognize it. When the work itself must remain difficult, give me sufficient grace to persevere."],
+ ["aspiration","Make easy what may rightly be made easy, O Lord, and strengthen me for what must remain difficult. Amen."]]},
 
 /* ── emergency (not in a category list) ── */
 {id:"sos", cat:"sos", t:"A terrible workday", secs:"60 seconds", b:[
